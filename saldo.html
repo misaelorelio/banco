@@ -15,7 +15,7 @@
 
     <style>
         body {
-            background: rgb(85, 147, 228);
+            background: rgb(95, 207, 105);
         }
 
         .caixa {
@@ -28,7 +28,7 @@
         }
     </style>
 
-    <title>Abra sua conta</title>
+    <title>Saldo</title>
 </head>
 
 <body>
@@ -72,33 +72,35 @@
                 <div class="row">
                     <div class="col-md-6 d-flex">
                         <div class="align-self-center">
-                            <h1>Insira seus dados</h1>
+                            <h1>Saldo</h1>
                             <form class="formulario mt-4 mb-4">
                                 <div class="input-group-lg">
-                                    <input type="text" id="nome" placeholder="Nome" class="form-control">
-                                    <input type="text" placeholder="CPF" class="form-control">
-                                    <input type="text" placeholder="Data de Nasciemnto" class="form-control">
-                                    <input type="text" placeholder="Data de Cadastro" class="form-control">
-                                    <button type="button" id="botao" class="btn btn-dark">Cadastrar</button>
-
-                                </div>
+                                    <div class="form-group">
+                                        <input type="text" id="consulta" placeholder="Número conta"
+                                            class="form-control">
+                                        <textarea class="form-control" id="logradouro" rows="3"
+                                            placeholder="Extrato aqui, aguarde!"></textarea>
+                                    </div>
                             </form>
+                            <button type="button" id="botao" class="btn btn-dark">Verificar </button>
                         </div>
-                    </div>
-                    <div class="col-md-6 d-flex">
-                        <div>
-                            <h1>Descomplicando suas dívidas</h1>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
-                        </div>
+                        </form>
                     </div>
                 </div>
+                <div class="col-md-6 d-flex">
+                    <div>
+                        <h1>Descomplicando suas dívidas</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             </div>
         </section>
@@ -107,16 +109,24 @@
             const botao = document.querySelector('#botao');
             botao.addEventListener('click', function () {
 
-                const api = 'http://localhost:8080/contas/adicionar';
+                const consulta = document.querySelector('#consulta').value;
+
+                const api = `http://viacep.com.br/ws/${consulta}/json/`;
+
                 const request = new XMLHttpRequest();
 
-                request.open('POST', api);
-
-                const nome = document.querySelector('#nome').value;
-                console.log(nome);
+                request.open('GET', api);
+                
+                request.onload = function(){
+                    let endereco = JSON.parse(request.responseText);
+                    let logradouro = document.querySelector('#logradouro');
+                    logradouro.innerHTML = endereco.logradouro;
+                };
+                request.send();
+               
             });
-
         </script>
+
         <!-- JavaScript (Opcional) 
          jQuery primeiro, depois Popper.js, depois Bootstrap JS
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
